@@ -44,8 +44,11 @@ async function resolveLogo() {
   if (!existsSync(logoDir)) return brand.logoFallback;
 
   const preference = [".svg", ".png", ".webp", ".jpg", ".jpeg"];
-  const files = (await readdir(logoDir)).filter((f) =>
-    preference.includes(path.extname(f).toLowerCase()),
+  const files = (await readdir(logoDir)).filter(
+    (f) =>
+      preference.includes(path.extname(f).toLowerCase()) &&
+      // never the archived source artwork
+      !/\.original\.[a-z]+$/i.test(f),
   );
 
   if (files.length === 0) return brand.logoFallback;
@@ -68,8 +71,13 @@ async function build() {
   await mkdir(dist, { recursive: true });
 
   // 1. Static assets (logo, etc.) + source scripts and styles.
+  // The untouched `*.original.*` artwork is kept in the repo for reference
+  // but never shipped — it is several times the size of what the page uses.
   if (existsSync(publicDir)) {
-    await cp(publicDir, dist, { recursive: true });
+    await cp(publicDir, dist, {
+      recursive: true,
+      filter: (source) => !/\.original\.[a-z]+$/i.test(source),
+    });
   }
   await cp(path.join(src, "styles"), path.join(dist, "styles"), { recursive: true });
   await cp(path.join(src, "scripts"), path.join(dist, "scripts"), { recursive: true });
