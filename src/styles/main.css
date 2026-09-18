@@ -1,0 +1,480 @@
+/* ==========================================================
+   Lamma — Social Links
+   Mobile-first, RTL, Arabic-first.
+
+   Palette is sampled directly from the official logo:
+     maroon #6B1220  on  cream #F8F0E6
+   ========================================================== */
+
+:root {
+  /* Brand — from the logo artwork */
+  --maroon: #6b1220;
+  --maroon-deep: #4a0b16;
+  --maroon-soft: #8f2130;
+  --cream: #f8f0e6;
+  --cream-warm: #fbf6ee;
+
+  /* Surface */
+  --surface: #ffffff;
+  --surface-tint: rgba(107, 18, 32, 0.035);
+  --stroke: rgba(107, 18, 32, 0.14);
+  --stroke-strong: rgba(107, 18, 32, 0.34);
+
+  /* Text */
+  --text: #2b1418;
+  --text-dim: #8a6a6f;
+
+  --radius: 18px;
+  --shell-max: 460px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100svh;
+  padding: calc(env(safe-area-inset-top, 0px) + 2.25rem) clamp(1rem, 5vw, 1.5rem)
+    calc(env(safe-area-inset-bottom, 0px) + 2rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family:
+    "IBM Plex Sans Arabic",
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background:
+    radial-gradient(120% 80% at 50% -5%, #fffaf3 0%, transparent 55%),
+    linear-gradient(180deg, var(--cream-warm) 0%, var(--cream) 60%, #f2e7d9 100%);
+  background-attachment: fixed;
+
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---------- Ambient background ---------- */
+
+.aurora {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora__blob {
+  position: absolute;
+  display: block;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.16;
+}
+
+.aurora__blob--a {
+  inset-block-start: -18%;
+  inset-inline-end: -22%;
+  width: 62vw;
+  max-width: 420px;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, var(--maroon), transparent 70%);
+}
+
+.aurora__blob--b {
+  inset-block-start: 36%;
+  inset-inline-start: -28%;
+  width: 58vw;
+  max-width: 380px;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, #c9962e, transparent 70%);
+}
+
+.aurora__blob--c {
+  inset-block-end: -20%;
+  inset-inline-end: -12%;
+  width: 55vw;
+  max-width: 360px;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, var(--maroon-soft), transparent 70%);
+}
+
+/* ---------- Skip link ---------- */
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: -9999px;
+  top: 0;
+  z-index: 50;
+  padding: 0.7rem 1.1rem;
+  border-radius: 0 0 12px 12px;
+  background: var(--maroon);
+  color: var(--cream);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.skip-link:focus-visible {
+  inset-inline-start: 50%;
+  transform: translateX(50%);
+}
+
+/* ---------- Layout ---------- */
+
+.shell {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--shell-max);
+  margin-inline: auto;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-block-end: 2.25rem;
+  animation: rise 0.7s var(--ease) both;
+}
+
+/* The logo artwork has its own cream ground, so the frame simply
+   continues it rather than boxing it in. */
+.hero__logo-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(132px, 38vw, 168px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--cream-warm);
+  box-shadow:
+    0 20px 45px -22px rgba(74, 11, 22, 0.45),
+    0 0 0 1px rgba(107, 18, 32, 0.1);
+}
+
+/* Soft halo behind the mark */
+.hero__logo-frame::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  z-index: -1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(107, 18, 32, 0.16), transparent 68%);
+  filter: blur(20px);
+}
+
+.hero__logo {
+  width: 112%;
+  height: 112%;
+  max-width: none;
+  object-fit: contain;
+}
+
+.hero__name {
+  margin: 1.2rem 0 0;
+  font-size: clamp(2.1rem, 9vw, 2.75rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  color: var(--maroon);
+}
+
+.hero__tagline {
+  margin: 0.35rem 0 0;
+  font-size: clamp(0.98rem, 3.8vw, 1.08rem);
+  font-weight: 500;
+  color: var(--maroon-soft);
+}
+
+.hero__rule {
+  width: 62px;
+  height: 2px;
+  margin-block-start: 1.35rem;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--maroon), transparent);
+  opacity: 0.55;
+}
+
+/* ---------- Link cards ---------- */
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+
+  /* Comfortable touch target well above the 44px minimum */
+  min-height: 68px;
+  padding: 0.85rem 1.1rem;
+
+  border: 1px solid var(--stroke);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: 0 8px 24px -18px rgba(74, 11, 22, 0.55);
+
+  color: var(--text);
+  text-decoration: none;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+
+  transition:
+    transform 0.28s var(--ease),
+    background-color 0.28s var(--ease),
+    border-color 0.28s var(--ease),
+    box-shadow 0.28s var(--ease);
+
+  animation: rise 0.55s var(--ease) both;
+  animation-delay: calc(0.09s * var(--i, 0) + 0.15s);
+}
+
+/* Maroon edge that grows on the inline-start side on hover */
+.card::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: 3px;
+  background: var(--maroon);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 0.3s var(--ease);
+}
+
+.card__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--maroon);
+  border: 1px solid transparent;
+  color: var(--cream);
+  transition:
+    background-color 0.28s var(--ease),
+    color 0.28s var(--ease),
+    box-shadow 0.28s var(--ease);
+}
+
+.card__glyph {
+  width: 22px;
+  height: 22px;
+}
+
+.card__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+/* Platform names stay LTR even inside the RTL page */
+.card__label {
+  font-size: 1.04rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  direction: ltr;
+  text-align: start;
+  unicode-bidi: isolate;
+}
+
+.card__handle {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  direction: ltr;
+  text-align: start;
+  unicode-bidi: isolate;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card__chevron {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  color: var(--text-dim);
+  transition:
+    transform 0.28s var(--ease),
+    color 0.28s var(--ease);
+}
+
+.card__badge {
+  flex: 0 0 auto;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: var(--surface-tint);
+  color: var(--maroon);
+  font-size: 0.72rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Interaction */
+@media (hover: hover) {
+  .card:not(.card--soon):hover {
+    transform: translateY(-3px);
+    border-color: var(--stroke-strong);
+    box-shadow: 0 18px 34px -20px rgba(74, 11, 22, 0.55);
+  }
+
+  .card:not(.card--soon):hover::after {
+    transform: scaleY(1);
+  }
+
+  /* RTL: the chevron points inline-start, so nudge it that way */
+  .card:not(.card--soon):hover .card__chevron {
+    transform: translateX(-4px);
+    color: var(--maroon);
+  }
+}
+
+.card:not(.card--soon):active {
+  transform: translateY(0) scale(0.985);
+}
+
+.card:focus-visible {
+  outline: 2px solid var(--maroon);
+  outline-offset: 3px;
+  border-color: var(--stroke-strong);
+}
+
+/* Per-platform accent on the icon tile */
+.card--facebook:hover .card__icon {
+  background: #1877f2;
+  color: #fff;
+}
+
+.card--instagram:hover .card__icon {
+  background: linear-gradient(45deg, #f09433, #dc2743 45%, #bc1888 90%);
+  color: #fff;
+}
+
+.card--tiktok:hover .card__icon {
+  background: #000;
+  color: #fff;
+}
+
+.card--app:hover .card__icon {
+  background: var(--maroon);
+  color: var(--cream);
+}
+
+/* "Coming soon" state — visible, readable, not clickable */
+.card--soon {
+  cursor: default;
+  background: transparent;
+  border-style: dashed;
+  box-shadow: none;
+}
+
+.card--soon .card__label {
+  opacity: 0.8;
+}
+
+/* Muted tile so the inactive card reads as inactive at a glance */
+.card--soon .card__icon {
+  background: var(--surface-tint);
+  border-color: rgba(107, 18, 32, 0.16);
+  color: var(--maroon-soft);
+}
+
+/* ---------- Footer ---------- */
+
+.footer {
+  margin-block-start: 2.25rem;
+  text-align: center;
+  animation: rise 0.6s var(--ease) both;
+  animation-delay: 0.55s;
+}
+
+.footer__text {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ---------- Larger screens ---------- */
+
+@media (min-width: 640px) {
+  :root {
+    --shell-max: 480px;
+  }
+
+  .card {
+    min-height: 74px;
+    padding-inline: 1.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    padding-block: 3rem;
+  }
+
+  .hero {
+    margin-block-end: 2.5rem;
+  }
+}
+
+/* ---------- Contrast / forced colors ---------- */
+
+@media (prefers-contrast: more) {
+  :root {
+    --text-dim: #6b4a4f;
+    --stroke: rgba(107, 18, 32, 0.4);
+  }
+}
+
+@media (forced-colors: active) {
+  .card {
+    border: 1px solid CanvasText;
+  }
+}
