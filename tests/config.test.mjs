@@ -19,7 +19,7 @@ test("all four platforms are present, in order", () => {
 test("live URLs match the ones supplied by the brand, exactly", () => {
   const byId = Object.fromEntries(socialLinks.map((l) => [l.id, l.url]));
 
-  assert.equal(byId.facebook, "https://www.facebook.com/share/19NCVk6S4W/");
+  assert.equal(byId.facebook, "https://www.facebook.com/JoinLamma");
   assert.equal(
     byId.instagram,
     "https://www.instagram.com/lamma_experiences?stkn=OHZlcG80YTF5NjYz",

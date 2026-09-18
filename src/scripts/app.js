@@ -42,9 +42,62 @@ export function renderLinks(container, links = socialLinks) {
   container.innerHTML = links.map(renderCard).join("\n");
 }
 
+/**
+ * Runs the welcome overlay.
+ *
+ * Shown once per visit, then dismissed automatically — or immediately by
+ * tapping, pressing a key, or the button. It is `hidden` in the markup and
+ * only switched on here, so a visitor without JavaScript never gets stuck
+ * behind a screen that nothing can close.
+ */
+export function initWelcome(el, { autoHideMs = 4200 } = {}) {
+  if (!el) return;
+
+  const reduced =
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
+  // With reduced motion the greeting is a flourish that costs the visitor
+  // time, so skip straight to the links.
+  if (reduced) {
+    el.remove();
+    return;
+  }
+
+  el.hidden = false;
+  document.body.classList.add("is-welcoming");
+
+  let done = false;
+  const dismiss = () => {
+    if (done) return;
+    done = true;
+
+    clearTimeout(timer);
+    el.classList.add("welcome--out");
+    document.body.classList.remove("is-welcoming");
+
+    el.addEventListener("transitionend", () => el.remove(), { once: true });
+    // Fallback in case the transition never fires (background tab, etc.).
+    setTimeout(() => el.remove(), 900);
+
+    window.removeEventListener("keydown", dismiss);
+  };
+
+  const timer = setTimeout(dismiss, autoHideMs);
+
+  el.addEventListener("click", dismiss);
+  window.addEventListener("keydown", dismiss);
+
+  // Kick off the entrance on the next frame so the transition actually runs.
+  requestAnimationFrame(() => el.classList.add("welcome--in"));
+}
+
 // Auto-run in the browser (skipped when imported by the Node build script).
 if (typeof document !== "undefined") {
-  const mount = () => renderLinks(document.getElementById("links"));
+  const mount = () => {
+    renderLinks(document.getElementById("links"));
+    initWelcome(document.getElementById("welcome"));
+  };
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", mount);
   } else {

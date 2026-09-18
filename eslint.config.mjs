@@ -12,6 +12,9 @@ export default [
         // Browser
         document: "readonly",
         window: "readonly",
+        setTimeout: "readonly",
+        clearTimeout: "readonly",
+        requestAnimationFrame: "readonly",
         // Node + shared
         console: "readonly",
         process: "readonly",

@@ -109,6 +109,10 @@ async function build() {
     .replaceAll("__LOGO_MIME__", mime)
     .replaceAll("__BRAND_NAME__", brand.nameAr)
     .replaceAll("__TAGLINE__", brand.tagline)
+    .replaceAll("__W_GREETING__", brand.welcome.greeting)
+    .replaceAll("__W_LINE__", brand.welcome.line)
+    .replaceAll("__W_WISH__", brand.welcome.wish)
+    .replaceAll("__W_CTA__", brand.welcome.cta)
     .replace("__LINKS__", links);
 
   await writeFile(path.join(dist, "index.html"), html, "utf8");

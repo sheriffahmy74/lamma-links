@@ -85,6 +85,30 @@ test("hosting files are emitted", opts, async () => {
   }
 });
 
+test("the welcome overlay is inert without JavaScript", opts, async () => {
+  const out = await html();
+  const tag = out.match(/<div class="welcome"[^>]*>/)?.[0];
+
+  assert.ok(tag, "welcome overlay missing");
+  // Without this, a visitor whose JS fails sees a screen nothing can close.
+  assert.match(tag, /\bhidden\b/, "overlay must ship hidden and be enabled by JS");
+});
+
+test("the welcome copy is rendered into the page", opts, async () => {
+  const out = await html();
+  for (const text of Object.values(brand.welcome)) {
+    assert.ok(out.includes(text), `welcome text missing: ${text}`);
+  }
+});
+
+test("the brand name is still available to screen readers and SEO", opts, async () => {
+  const out = await html();
+  const h1 = out.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1];
+
+  assert.ok(h1, "page must keep an h1");
+  assert.ok(h1.includes(brand.nameAr), "h1 should name the brand");
+});
+
 test("the page is readable without JavaScript", opts, async () => {
   const out = await html();
   // Cards must be pre-rendered, not left to the client-side script.

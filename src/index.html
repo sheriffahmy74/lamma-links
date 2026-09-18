@@ -48,6 +48,29 @@
 
     <a class="skip-link" href="#links">تخطَّ إلى الروابط</a>
 
+    <!--
+      Welcome overlay — the first thing shown after a QR scan.
+      Rendered inert by default so that a visitor with JavaScript disabled
+      (or before the script runs) sees the links immediately instead of a
+      screen they cannot dismiss. app.js activates it.
+    -->
+    <div class="welcome" id="welcome" hidden>
+      <div class="welcome__inner" role="status" aria-live="polite">
+        <img
+          class="welcome__logo"
+          src="__LOGO__"
+          alt=""
+          width="120"
+          height="120"
+          decoding="async"
+        />
+        <p class="welcome__greeting">__W_GREETING__</p>
+        <p class="welcome__line">__W_LINE__</p>
+        <p class="welcome__wish">__W_WISH__</p>
+        <button class="welcome__cta" type="button" id="welcome-cta">__W_CTA__</button>
+      </div>
+    </div>
+
     <main class="shell">
       <header class="hero">
         <div class="hero__logo-frame">
@@ -61,8 +84,10 @@
           />
         </div>
 
-        <h1 class="hero__name">__BRAND_NAME__</h1>
-        <p class="hero__tagline">__TAGLINE__</p>
+        <!-- The logo artwork already carries the name and the tagline, so
+             they are not repeated visually. The heading stays in the DOM for
+             screen readers and search engines. -->
+        <h1 class="visually-hidden">__BRAND_NAME__ — __TAGLINE__</h1>
         <span class="hero__rule" aria-hidden="true"></span>
       </header>
 

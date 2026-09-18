@@ -21,6 +21,18 @@ export const brand = {
   description: "تابع لمّة على كل منصاتنا وخليك دايمًا قريب من كل جديد.",
 
   /**
+   * The welcome screen shown once, right after the QR is scanned.
+   * Egyptian colloquial Arabic on purpose — it should read like a person
+   * greeting you, not like a website.
+   */
+  welcome: {
+    greeting: "أهلًا بيك",
+    line: "نوّرت لمّة",
+    wish: "أتمنالك يوم حلو زيّك",
+    cta: "يلا بينا",
+  },
+
+  /**
    * The public URL of THIS page.
    * The QR code points here — never directly at a social network.
    * Change it once after deployment and re-run: npm run qr
@@ -61,8 +73,11 @@ export const socialLinks = [
   {
     id: "facebook",
     label: "Facebook",
-    handle: "Lamma Experiences",
-    url: "https://www.facebook.com/share/19NCVk6S4W/",
+    handle: "JoinLamma",
+    // Canonical page URL. The share link it came from carried `rdid` and
+    // `share_url` tracking params; they redirect to this same page, so the
+    // clean form is used instead — shorter and stable.
+    url: "https://www.facebook.com/JoinLamma",
   },
   {
     id: "instagram",
