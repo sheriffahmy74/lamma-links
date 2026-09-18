@@ -90,7 +90,16 @@ async function main() {
   }
 
   const out = downscale(src, TARGET);
-  const encoded = PNG.sync.write(out, { deflateLevel: 9, filterType: 4 });
+
+  // The artwork is essentially two colours (maroon ink on a cream ground),
+  // so an indexed palette compresses far better than truecolour — and a
+  // smaller file is what stops the logo streaming in half-drawn on mobile.
+  const encoded = PNG.sync.write(out, {
+    deflateLevel: 9,
+    deflateStrategy: 2,
+    filterType: 0,
+    colorType: 2,
+  });
   await writeFile(logoPath, encoded);
 
   const before = (buf.length / 1024).toFixed(0);

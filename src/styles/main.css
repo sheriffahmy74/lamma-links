@@ -12,7 +12,9 @@
   --maroon-deep: #4a0b16;
   --maroon-soft: #8f2130;
   --cream: #f8f0e6;
-  --cream-warm: #fbf6ee;
+  /* Sampled from the logo artwork's own ground. Matching it exactly is what
+     makes the mark's square edge disappear into the page. */
+  --cream-warm: #fef8ec;
 
   /* Surface */
   --surface: #ffffff;
@@ -57,59 +59,13 @@ body {
   font-size: 16px;
   line-height: 1.6;
   color: var(--text);
-  background:
-    radial-gradient(120% 80% at 50% -5%, #fffaf3 0%, transparent 55%),
-    linear-gradient(180deg, var(--cream-warm) 0%, var(--cream) 60%, #f2e7d9 100%);
-  background-attachment: fixed;
+  /* Flat, and exactly the logo artwork's own ground: the mark ships with a
+     baked-in background, so any gradient here would outline it as a square. */
+  background: var(--cream-warm);
 
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-}
-
-/* ---------- Ambient background ---------- */
-
-.aurora {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.aurora__blob {
-  position: absolute;
-  display: block;
-  border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.16;
-}
-
-.aurora__blob--a {
-  inset-block-start: -18%;
-  inset-inline-end: -22%;
-  width: 62vw;
-  max-width: 420px;
-  aspect-ratio: 1;
-  background: radial-gradient(circle, var(--maroon), transparent 70%);
-}
-
-.aurora__blob--b {
-  inset-block-start: 36%;
-  inset-inline-start: -28%;
-  width: 58vw;
-  max-width: 380px;
-  aspect-ratio: 1;
-  background: radial-gradient(circle, #c9962e, transparent 70%);
-}
-
-.aurora__blob--c {
-  inset-block-end: -20%;
-  inset-inline-end: -12%;
-  width: 55vw;
-  max-width: 360px;
-  aspect-ratio: 1;
-  background: radial-gradient(circle, var(--maroon-soft), transparent 70%);
 }
 
 /* ---------- Screen-reader-only text ---------- */
@@ -139,9 +95,9 @@ body {
   text-align: center;
   cursor: pointer;
 
-  background:
-    radial-gradient(120% 80% at 50% 0%, #fffaf3 0%, transparent 55%),
-    linear-gradient(180deg, var(--cream-warm) 0%, var(--cream) 60%, #f2e7d9 100%);
+  /* Flat, and exactly the logo's own ground: any gradient here would make
+     the artwork's square edge visible against it. */
+  background: var(--cream-warm);
 
   opacity: 0;
   transition:
@@ -178,13 +134,21 @@ body {
   animation: welcome-rise 0.7s var(--ease) forwards;
 }
 
+/* Shown whole: the artwork is square and its lower third carries the
+   tagline and rule, which a circular crop would slice off. */
 .welcome__logo {
-  width: clamp(104px, 30vw, 128px);
+  width: clamp(150px, 44vw, 190px);
   height: auto;
-  border-radius: 50%;
-  margin-block-end: 1.25rem;
-  box-shadow: 0 18px 40px -20px rgba(74, 11, 22, 0.45);
+  margin-block-end: 1rem;
   animation-delay: 0.1s;
+
+  /* Hidden until the script confirms the image has decoded, so it can never
+     appear mid-stream on a slow connection. */
+  visibility: hidden;
+}
+
+.welcome--ready .welcome__logo {
+  visibility: visible;
 }
 
 .welcome__greeting {
@@ -306,37 +270,19 @@ body.is-welcoming {
   animation: rise 0.7s var(--ease) both;
 }
 
-/* The logo artwork has its own cream ground, so the frame simply
-   continues it rather than boxing it in. */
+/* No circular crop: the mark's lower third holds the tagline and the rule,
+   and a round frame cuts straight through them. */
 .hero__logo-frame {
   position: relative;
   display: grid;
   place-items: center;
-  width: clamp(152px, 44vw, 190px);
+  width: clamp(190px, 54vw, 230px);
   aspect-ratio: 1;
-  border-radius: 50%;
-  overflow: hidden;
-  background: var(--cream-warm);
-  box-shadow:
-    0 20px 45px -22px rgba(74, 11, 22, 0.45),
-    0 0 0 1px rgba(107, 18, 32, 0.1);
-}
-
-/* Soft halo behind the mark */
-.hero__logo-frame::after {
-  content: "";
-  position: absolute;
-  inset: -20%;
-  z-index: -1;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(107, 18, 32, 0.16), transparent 68%);
-  filter: blur(20px);
 }
 
 .hero__logo {
-  width: 112%;
-  height: 112%;
-  max-width: none;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
 }
 

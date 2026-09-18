@@ -67,7 +67,38 @@ export function initWelcome(el, { autoHideMs = 4200 } = {}) {
   el.hidden = false;
   document.body.classList.add("is-welcoming");
 
+  // Hold the entrance until the logo has actually decoded. Starting the
+  // animation over a half-loaded image is what makes it look broken on a
+  // slow connection — which is exactly the case here, since people arrive
+  // on mobile data straight from the QR.
+  // A progressive PNG paints as it streams, so the logo can show half-drawn.
+  // `naturalWidth` is no help — the header carries the dimensions long before
+  // the pixels arrive. Only the `load` event means every byte is in, and
+  // `decode()` after it means the frame is safe to paint.
+  const logo = el.querySelector(".welcome__logo");
+
+  // Load a detached copy of the same URL: its `load` fires only when the
+  // full file has arrived, and the browser serves the visible <img> from
+  // cache immediately afterwards. Checking the visible element directly is
+  // unreliable — `complete` and `naturalWidth` both report early.
+  const decoded = new Promise((resolve) => {
+    if (!logo) return resolve();
+
+    const probe = new Image();
+    probe.addEventListener("load", resolve, { once: true });
+    probe.addEventListener("error", resolve, { once: true });
+    probe.src = logo.currentSrc || logo.src;
+  }).then(() => (logo?.decode ? logo.decode().catch(() => {}) : undefined));
+
+  // Never let a stalled or broken image hold the greeting hostage.
+  const logoReady = Promise.race([
+    decoded,
+    new Promise((resolve) => setTimeout(resolve, 2500)),
+  ]);
+
   let done = false;
+  let timer;
+
   const dismiss = () => {
     if (done) return;
     done = true;
@@ -83,13 +114,22 @@ export function initWelcome(el, { autoHideMs = 4200 } = {}) {
     window.removeEventListener("keydown", dismiss);
   };
 
-  const timer = setTimeout(dismiss, autoHideMs);
-
   el.addEventListener("click", dismiss);
   window.addEventListener("keydown", dismiss);
 
-  // Kick off the entrance on the next frame so the transition actually runs.
-  requestAnimationFrame(() => el.classList.add("welcome--in"));
+  logoReady.then(() => {
+    if (done) return;
+
+    // Reveal the logo only now that it is fully decoded.
+    el.classList.add("welcome--ready");
+
+    // The countdown starts here, not at load, so the greeting gets its full
+    // moment on a slow connection instead of being cut short by loading.
+    timer = setTimeout(dismiss, autoHideMs);
+
+    // Next frame, so the transition actually runs.
+    requestAnimationFrame(() => el.classList.add("welcome--in"));
+  });
 }
 
 // Auto-run in the browser (skipped when imported by the Node build script).

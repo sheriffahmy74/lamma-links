@@ -15,6 +15,7 @@ export default [
         setTimeout: "readonly",
         clearTimeout: "readonly",
         requestAnimationFrame: "readonly",
+        Image: "readonly",
         // Node + shared
         console: "readonly",
         process: "readonly",
