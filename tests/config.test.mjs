@@ -12,21 +12,25 @@ import { renderCard } from "../src/scripts/app.js";
 test("all four platforms are present, in order", () => {
   assert.deepEqual(
     socialLinks.map((l) => l.label),
-    ["Facebook", "Instagram", "TikTok", "Lamma App"],
+    ["Facebook", "Instagram", "TikTok", "Snapchat", "Lamma App"],
   );
 });
 
 test("live URLs match the ones supplied by the brand, exactly", () => {
   const byId = Object.fromEntries(socialLinks.map((l) => [l.id, l.url]));
 
-  assert.equal(byId.facebook, "https://www.facebook.com/JoinLamma");
+  assert.equal(byId.facebook, "https://www.facebook.com/share/1CPwWnow5y/");
   assert.equal(
     byId.instagram,
     "https://www.instagram.com/lamma_experiences?stkn=OHZlcG80YTF5NjYz",
   );
   assert.equal(
     byId.tiktok,
-    "https://www.tiktok.com/@lamma.experiences?_r=1&_t=ZS-99nvRqG1Pvh",
+    "https://www.tiktok.com/@experiences.eg?_r=1&_t=ZS-99q62keij6D",
+  );
+  assert.equal(
+    byId.snapchat,
+    "https://www.snapchat.com/add/lammaex?share_id=0SMVGxfj_5k&locale=ar-AA",
   );
 });
 

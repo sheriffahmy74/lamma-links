@@ -73,11 +73,8 @@ export const socialLinks = [
   {
     id: "facebook",
     label: "Facebook",
-    handle: "JoinLamma",
-    // Canonical page URL. The share link it came from carried `rdid` and
-    // `share_url` tracking params; they redirect to this same page, so the
-    // clean form is used instead — shorter and stable.
-    url: "https://www.facebook.com/JoinLamma",
+    handle: "لمّة",
+    url: "https://www.facebook.com/share/1CPwWnow5y/",
   },
   {
     id: "instagram",
@@ -88,8 +85,14 @@ export const socialLinks = [
   {
     id: "tiktok",
     label: "TikTok",
-    handle: "@lamma.experiences",
-    url: "https://www.tiktok.com/@lamma.experiences?_r=1&_t=ZS-99nvRqG1Pvh",
+    handle: "@experiences.eg",
+    url: "https://www.tiktok.com/@experiences.eg?_r=1&_t=ZS-99q62keij6D",
+  },
+  {
+    id: "snapchat",
+    label: "Snapchat",
+    handle: "lammaex",
+    url: "https://www.snapchat.com/add/lammaex?share_id=0SMVGxfj_5k&locale=ar-AA",
   },
   {
     id: "app",
